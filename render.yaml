@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: proyecto-evento-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    rootDir: backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: proyecto-evento-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: "*" # Se puede restringir a tu URL de Vercel después de desplegar el frontend
+
+databases:
+  - name: proyecto-evento-db
+    plan: free
