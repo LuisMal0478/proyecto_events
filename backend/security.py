@@ -5,7 +5,9 @@ import base64
 import hmac
 import hashlib
 import secrets
+# pyrefly: ignore [missing-import]
 from fastapi import Depends, HTTPException, status
+# pyrefly: ignore [missing-import]
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "un_secreto_super_seguro_por_defecto_para_desarrollo_123!").encode('utf-8')

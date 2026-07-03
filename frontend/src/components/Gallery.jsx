@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 
 export default function Gallery() {
-  const categories = ['Todos', 'Cumpleaños', 'Baby Shower', 'Bautizos', 'Mobiliario'];
+  const categories = ['Todos', 'Cumpleaños', 'Baby Shower', 'Grados', 'Bautizos', 'Mobiliario'];
 
   const demoItems = [
     {
@@ -47,6 +47,13 @@ export default function Gallery() {
       title: 'Primera Comunión Calidez y Luz',
       category: 'Bautizos',
       desc: 'Fondo sobrio con velas decorativas y detalles en dorado.'
+    },
+    {
+      id: 7,
+      src: '/images/decoracion_gradosos.png',
+      title: 'Cumpleaños Infantil Selva Pastel',
+      category: 'Grados',
+      desc: 'Arco orgánico de globos con cilindros temáticos.'
     }
   ];
 
@@ -112,7 +119,7 @@ export default function Gallery() {
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-pastel-pink-light/40 rounded-full filter blur-3xl opacity-50 animate-float" style={{ animationDuration: '10s', animationDelay: '1s' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
           <h2 className="text-xs font-extrabold text-pastel-pink-dark tracking-widest uppercase bg-pink-50 border border-pink-200/30 px-3 py-1 rounded-full inline-block">Nuestra Galería</h2>
@@ -130,11 +137,10 @@ export default function Gallery() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
-                selectedCategory === cat
+              className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${selectedCategory === cat
                   ? 'bg-gradient-to-r from-pastel-blue-dark via-pastel-purple-dark to-pastel-pink-dark text-white shadow-md shadow-purple-100/50 scale-105'
                   : 'bg-slate-100/80 hover:bg-slate-200/80 text-slate-600 border border-slate-200/40 hover:scale-102'
-              }`}
+                }`}
             >
               {cat}
             </button>
@@ -172,7 +178,7 @@ export default function Gallery() {
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                     />
-                    
+
                     {/* Glass Overlay on hover */}
                     <div className="absolute inset-0 bg-slate-900/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="p-4 bg-white/20 backdrop-blur-md rounded-full shadow-lg text-white scale-75 group-hover:scale-100 transition-transform duration-300 border border-white/30">
@@ -253,9 +259,8 @@ export default function Gallery() {
                     e.stopPropagation();
                     setIsZoomed(!isZoomed);
                   }}
-                  className={`max-w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl border-4 border-white/10 cursor-pointer ${
-                    isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
-                  }`}
+                  className={`max-w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl border-4 border-white/10 cursor-pointer ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
+                    }`}
                 />
               </div>
 

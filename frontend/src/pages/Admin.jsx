@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowLeft, Search, CheckCircle, Circle, Trash2, 
+import {
+  ArrowLeft, Search, CheckCircle, Circle, Trash2,
   MapPin, Phone, Loader2, AlertCircle, RefreshCw, Plus, Image as ImageIcon, Sparkles, Lock
 } from 'lucide-react';
 
@@ -16,20 +16,20 @@ export default function Admin() {
 
   // Dashboard Navigation State
   const [activeTab, setActiveTab] = useState('cotizaciones'); // 'cotizaciones' o 'galeria'
-  
+
   // States for Requests (Cotizaciones)
   const [cotizaciones, setCotizaciones] = useState([]);
   const [loadingQuotes, setLoadingQuotes] = useState(true);
   const [errorQuotes, setErrorQuotes] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('todos'); 
+  const [statusFilter, setStatusFilter] = useState('todos');
   const [eventFilter, setEventFilter] = useState('todos');
 
   // States for Gallery Management
   const [galleryItems, setGalleryItems] = useState([]);
   const [loadingGallery, setLoadingGallery] = useState(true);
   const [errorGallery, setErrorGallery] = useState(null);
-  
+
   // Gallery Form State
   const [galleryForm, setGalleryForm] = useState({
     title: '',
@@ -82,7 +82,7 @@ export default function Admin() {
       if (searchTerm) params.push(`search=${encodeURIComponent(searchTerm)}`);
       if (statusFilter === 'atendidos') params.push('atendido=true');
       if (statusFilter === 'pendientes') params.push('atendido=false');
-      
+
       if (params.length > 0) {
         url += `?${params.join('&')}`;
       }
@@ -99,7 +99,7 @@ export default function Admin() {
       }
       if (!res.ok) throw new Error('Error al obtener datos del servidor');
       const data = await res.json();
-      
+
       let finalData = data;
       if (eventFilter !== 'todos') {
         finalData = data.filter(item => item.evento === eventFilter);
@@ -157,9 +157,9 @@ export default function Admin() {
     let filtered = [...mockData];
     if (searchTerm) {
       const s = searchTerm.toLowerCase();
-      filtered = filtered.filter(item => 
-        item.nombre.toLowerCase().includes(s) || 
-        item.telefono.includes(s) || 
+      filtered = filtered.filter(item =>
+        item.nombre.toLowerCase().includes(s) ||
+        item.telefono.includes(s) ||
         item.evento.toLowerCase().includes(s) ||
         item.ciudad.toLowerCase().includes(s)
       );
@@ -246,7 +246,7 @@ export default function Admin() {
       const token = sessionStorage.getItem('adminToken');
       const res = await fetch(`${API_URL}/api/cotizaciones/${id}/atendido`, {
         method: 'PATCH',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
@@ -262,7 +262,7 @@ export default function Admin() {
         throw new Error('Error en actualización backend');
       }
     } catch (err) {
-      setCotizaciones(prev => prev.map(item => 
+      setCotizaciones(prev => prev.map(item =>
         item.id === id ? { ...item, atendido: !currentStatus } : item
       ));
     }
@@ -321,7 +321,7 @@ export default function Admin() {
       const token = sessionStorage.getItem('adminToken');
       const res = await fetch(`${API_URL}/api/galeria`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
@@ -349,7 +349,7 @@ export default function Admin() {
     } catch (err) {
       console.error(err);
       alert('No se pudo guardar la imagen en el servidor. Guardando localmente en la demo.');
-      
+
       const newLocalItem = {
         id: Date.now(),
         src: imageBase64,
@@ -482,7 +482,7 @@ export default function Admin() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={() => activeTab === 'cotizaciones' ? fetchCotizaciones() : fetchGalleryItems()}
               className="px-4 py-2 hover:bg-slate-100 text-slate-600 rounded-full hover:text-slate-800 border border-slate-200/40 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer"
               title="Sincronizar datos"
@@ -502,26 +502,24 @@ export default function Admin() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 relative z-10">
-        
+
         {/* Navigation Tabs */}
         <div className="flex bg-slate-100 p-1.5 rounded-2xl mb-8 gap-1 max-w-md border border-slate-200/50">
           <button
             onClick={() => setActiveTab('cotizaciones')}
-            className={`flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer ${
-              activeTab === 'cotizaciones'
+            className={`flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer ${activeTab === 'cotizaciones'
                 ? 'bg-white text-slate-800 shadow-sm'
                 : 'text-slate-500 hover:text-slate-700'
-            }`}
+              }`}
           >
             📋 Cotizaciones
           </button>
           <button
             onClick={() => setActiveTab('galeria')}
-            className={`flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer ${
-              activeTab === 'galeria'
+            className={`flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer ${activeTab === 'galeria'
                 ? 'bg-white text-slate-800 shadow-sm'
                 : 'text-slate-500 hover:text-slate-700'
-            }`}
+              }`}
           >
             🖼️ Galería
           </button>
@@ -614,9 +612,9 @@ export default function Admin() {
                         <tr key={cot.id} className={`hover:bg-slate-50/50 transition-colors ${cot.atendido ? 'bg-slate-50/20' : ''}`}>
                           <td className="py-4 px-6">
                             <div className="font-bold text-slate-800">{cot.nombre}</div>
-                            <a 
-                              href={`https://wa.me/${cot.telefono.replace(/\s+/g, '')}`} 
-                              target="_blank" 
+                            <a
+                              href={`https://wa.me/${cot.telefono.replace(/\s+/g, '')}`}
+                              target="_blank"
                               rel="noreferrer"
                               className="flex items-center gap-1 text-xs text-pastel-blue-dark font-bold mt-0.5 hover:underline"
                             >
@@ -638,9 +636,8 @@ export default function Admin() {
                           <td className="py-4 px-4 text-center">
                             <button
                               onClick={() => handleToggleAtendido(cot.id, cot.atendido)}
-                              className={`p-1 rounded-full transition-all focus:outline-none ${
-                                cot.atendido ? 'text-green-500 hover:text-green-600' : 'text-slate-300 hover:text-slate-400'
-                              }`}
+                              className={`p-1 rounded-full transition-all focus:outline-none ${cot.atendido ? 'text-green-500 hover:text-green-600' : 'text-slate-300 hover:text-slate-400'
+                                }`}
                             >
                               {cot.atendido ? <CheckCircle size={22} /> : <Circle size={22} />}
                             </button>
@@ -666,9 +663,9 @@ export default function Admin() {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="font-bold text-slate-800">{cot.nombre}</div>
-                          <a 
-                            href={`https://wa.me/${cot.telefono.replace(/\s+/g, '')}`} 
-                            target="_blank" 
+                          <a
+                            href={`https://wa.me/${cot.telefono.replace(/\s+/g, '')}`}
+                            target="_blank"
                             rel="noreferrer"
                             className="inline-flex items-center gap-1 text-xs text-pastel-blue-dark font-bold mt-1"
                           >
@@ -736,14 +733,14 @@ export default function Admin() {
             )}
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
+
               {/* Add image form */}
               <div className="lg:col-span-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100 space-y-4">
                 <h3 className="font-bold text-slate-800 font-comfortaa text-lg flex items-center gap-2 border-b border-slate-100 pb-3">
                   <Plus className="text-pastel-pink-dark" size={20} />
                   Agregar Nueva Foto
                 </h3>
-                
+
                 <form onSubmit={handleAddGalleryItem} className="space-y-4 text-sm">
                   <div>
                     <label className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Imagen</label>
@@ -794,6 +791,7 @@ export default function Admin() {
                       <option value="Baby Shower">Baby Shower</option>
                       <option value="Bautizos">Bautizos</option>
                       <option value="Mobiliario">Mobiliario</option>
+                      <option value="Grados">Grados</option>
                     </select>
                   </div>
 
@@ -847,10 +845,10 @@ export default function Admin() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                     {galleryItems.map((item) => (
                       <div key={item.id} className="flex gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100 relative group">
-                        <img 
-                          src={item.src} 
-                          alt={item.title} 
-                          className="w-20 h-20 object-cover rounded-xl border border-slate-200" 
+                        <img
+                          src={item.src}
+                          alt={item.title}
+                          className="w-20 h-20 object-cover rounded-xl border border-slate-200"
                         />
                         <div className="flex-1 flex flex-col justify-between py-0.5">
                           <div>
@@ -860,7 +858,7 @@ export default function Admin() {
                             <h4 className="font-bold text-slate-800 text-xs mt-1 line-clamp-1">{item.title}</h4>
                             <p className="text-[10px] text-slate-500 line-clamp-2 mt-0.5">{item.desc}</p>
                           </div>
-                          
+
                           <button
                             onClick={() => handleDeleteGalleryItem(item.id)}
                             className="self-start text-[10px] text-red-500 hover:text-red-700 font-bold flex items-center gap-1 hover:underline mt-2 focus:outline-none"
